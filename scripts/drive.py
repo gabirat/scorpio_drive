@@ -73,8 +73,8 @@ class DriveModule:
         print('Speed: ', speed)
         print('\n')
 
-        self.wheels['rl'].rpdo[4]['Device command']['Device command - data 0'].raw = speed
-        self.wheels['rl'].rpdo[4]['Device command']['Device command - execute on change'].raw = 0x32
+        self.wheels['rl'].rpdo[4]['Device command.Device command - data 0'].raw = speed
+        self.wheels['rl'].rpdo[4]['Device command.Device command - execute on change'].raw = 0x32
 
 if __name__ == '__main__':
     drive = DriveModule()
