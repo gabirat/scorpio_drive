@@ -26,14 +26,15 @@ class DriveModule:
 
         #ROS Node setup
         rospy.Subscriber('joy', Joy, self.controller_data)
+        self.wheels['rl'].sdo['DEV_Cmd_ExecOnChange'].raw = 0x13 #Mode Vel
         self.wheels['rl'].sdo['Power enable'].raw = 1
 
 
 
     def controller_data(self, data):
         for wheel_key in self.wheels:
-            print(self.wheels[wheel_key].sdo['Current actual value'].phys)
-            print(self.wheels[wheel_key].sdo['Velocity - desired value'].raw)
+            print('Current actual value:', self.wheels[wheel_key].sdo['Current actual value'].phys)
+            print('Velocity - desired value :', self.wheels[wheel_key].sdo['Velocity - desired value'].raw)
             self.wheels[wheel_key].sdo['Velocity - desired value'].raw = int(data.axes[4] * 500) # 0 - 500 RPM
 
 
