@@ -42,7 +42,7 @@ class DriveModule:
         print('Position actual value [count]:', self.wheels['rl'].sdo['Position actual value [count]'].raw)
         print('Torque actual value:', self.wheels['rl'].sdo['Torque actual value'].raw)
         print('Current actual value:', self.wheels['rl'].sdo['Current actual value'].raw)
-        print('Current - actual value:', self.wheels['rl'].sdo['Current - actual value'].raw)
+        print('Current - actual value:', self.wheels['rl'].sdo['Current - actual value']['Current - actual value'].raw)
         print('Unfiltered velocity - actual value:', self.wheels['rl'].sdo['Unfiltered velocity - actual value'].raw)
         print('Velocity - desired value:', self.wheels['rl'].sdo['Velocity - desired value'].raw)
         trigger_norm = 1.0 - ((data.axes[4] + 1.0) / 2) #0.0 - 1.0
