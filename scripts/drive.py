@@ -43,7 +43,7 @@ class DriveModule:
         print('Torque actual value:', self.wheels['rl'].sdo['Torque actual value'].raw)
         print('Current actual value:', self.wheels['rl'].sdo['Current actual value'].raw)
         print('Current - actual value:', self.wheels['rl'].sdo['Current - actual value']['Current - actual value'].raw)
-        print('Measured velocity in [rpm]:', self.wheels['rl'].sdo['Measured velocity in [rpm]'].raw)
+        print('Measured velocity in [rpm]:', self.wheels['rl'].sdo['Measured velocity in increments']['Measured velocity in [rpm]'].raw)
         print('Velocity - desired value:', self.wheels['rl'].sdo['Velocity - desired value'].raw)
         print('\n')
         trigger_norm = 1.0 - ((data.axes[4] + 1.0) / 2) #0.0 - 1.0
