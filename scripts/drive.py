@@ -27,7 +27,7 @@ class DriveModule:
 
         #ROS Node setup
         rospy.Subscriber('joy', Joy, self.controller_data)
-        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x12 #Mode Vel
+        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x15 #Mode Vel
         
 
 
@@ -46,7 +46,7 @@ class DriveModule:
         print('Unfiltered velocity - actual value:', self.wheels['rl'].sdo['Unfiltered velocity - actual value'].raw)
         print('Velocity - desired value:', self.wheels['rl'].sdo['Velocity - desired value'].raw)
         trigger_norm = 1.0 - ((data.axes[4] + 1.0) / 2) #0.0 - 1.0
-        self.wheels['rl'].sdo['Velocity - desired value'].raw = int(trigger_norm * 3000) # 0 - 500 RPM
+        self.wheels['rl'].sdo['Velocity - desired value'].raw = int(trigger_norm * 1000) # 0 - 500 RPM
 
 
 if __name__ == '__main__':
