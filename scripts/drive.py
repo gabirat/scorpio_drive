@@ -27,7 +27,7 @@ class DriveModule:
 
         #ROS Node setup
         rospy.Subscriber('joy', Joy, self.controller_data)
-        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x13 #Mode Vel
+        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x15 #Mode SubVel
         
 
 
@@ -43,10 +43,14 @@ class DriveModule:
         print('Torque actual value:', self.wheels['rl'].sdo['Torque actual value'].raw)
         print('Current actual value:', self.wheels['rl'].sdo['Current actual value'].raw)
         print('Current - actual value:', self.wheels['rl'].sdo['Current - actual value']['Current - actual value'].raw)
-        print('Unfiltered velocity - actual value:', self.wheels['rl'].sdo['Unfiltered velocity - actual value'].raw)
+        print('Measured velocity in [rpm]:', self.wheels['rl'].sdo['Measured velocity in [rpm]'].raw)
         print('Velocity - desired value:', self.wheels['rl'].sdo['Velocity - desired value'].raw)
+        print('\n')
         trigger_norm = 1.0 - ((data.axes[4] + 1.0) / 2) #0.0 - 1.0
-        self.wheels['rl'].sdo['Velocity - desired value'].raw = int(trigger_norm * 1000) # 0 - 500 RPM
+
+        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x32
+        self.wheels['rl'].sdo['Device command']['Device command - data 0'].raw = int(trigger_norm * 1000)
+        #self.wheels['rl'].sdo['Velocity - desired value'].raw = int(trigger_norm * 1000) # 0 - 500 RPM
 
 
 if __name__ == '__main__':
