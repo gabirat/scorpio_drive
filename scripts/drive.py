@@ -23,11 +23,11 @@ class DriveModule:
             "rl": self.network.add_node(3, micontrol_eds),
             "rr": self.network.add_node(4, micontrol_eds)
         }
-        #network.nmt.state = 'OPERATIONAL'
+        network.nmt.state = 'OPERATIONAL'
 
         #ROS Node setup
         rospy.Subscriber('joy', Joy, self.controller_data)
-        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x15 #Mode Vel
+        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x13 #Mode Vel
         
 
 
