@@ -23,14 +23,33 @@ class DriveModule:
             "rl": self.network.add_node(3, micontrol_eds),
             "rr": self.network.add_node(4, micontrol_eds)
         }
-        self.network.nmt.state = 'OPERATIONAL'
 
+        self.setup_pdo(self.wheels['rl'])
+        
+        self.network.nmt.state = 'OPERATIONAL'
         #ROS Node setup
         rospy.Subscriber('joy', Joy, self.controller_data)
         self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x15 #Mode SubVel
         
 
 
+    def setup_pdo(self, node):
+        # Read current PDO configuration
+        node.tpdo.read()
+        node.rpdo.read()
+
+        node.rpdo[0].clear()
+        node.rpdo[0].add_variable('Device command', 'Device command - data 0')
+        node.rpdo[0].add_variable('Device command', 'Device command - execute on change')
+        node.rpdo[0].enabled = True
+
+        # Save new configuration (node must be in pre-operational)
+        node.nmt.state = 'PRE-OPERATIONAL'
+        node.rpdo.save()
+
+        # Start RPDO0 with an interval of 100 ms
+        node.rpdo[0].start(0.01)
+        node.nmt.state = 'OPERATIONAL'
 
     def controller_data(self, data):
         if data.buttons[7]:
@@ -54,8 +73,8 @@ class DriveModule:
         print('Speed: ', speed)
         print('\n')
 
-        self.wheels['rl'].sdo['Device command']['Device command - data 0'].raw = speed
-        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x32
+        self.wheels['rl'].rpdo[0]['Device command']['Device command - data 0'].raw = speed
+        self.wheels['rl'].rpdo[0]['Device command']['Device command - execute on change'].raw = 0x32
 
 if __name__ == '__main__':
     drive = DriveModule()
