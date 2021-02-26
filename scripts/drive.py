@@ -16,6 +16,7 @@ class DriveModule:
         can_interface = rospy.get_param('~can_interface')
         micontrol_eds = rospy.get_param('~micontrol_eds')
         self.network.connect(channel=can_interface, bustype='socketcan')
+        self.enabled = 0
         self.wheels = {
             "fl": self.network.add_node(1, micontrol_eds),
             "fr": self.network.add_node(2, micontrol_eds),
@@ -26,16 +27,22 @@ class DriveModule:
 
         #ROS Node setup
         rospy.Subscriber('joy', Joy, self.controller_data)
-        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x13 #Mode Vel
-        self.wheels['rl'].sdo['Power enable'].raw = 1
+        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x12 #Mode Vel
+        
 
 
 
     def controller_data(self, data):
+        if data.buttons[7]:
+            self.enabled = 1 if self.enabled == 0 else 0
+            print('Power toogled: ', self.enabled)
+            self.wheels['rl'].sdo['Power enable'].raw = self.enabled
+
         for wheel_key in self.wheels:
             print('Current actual value:', self.wheels[wheel_key].sdo['Current actual value'].phys)
             print('Velocity - desired value :', self.wheels[wheel_key].sdo['Velocity - desired value'].raw)
-            self.wheels[wheel_key].sdo['Velocity - desired value'].raw = int(data.axes[4] * 500) # 0 - 500 RPM
+            trigger_norm = (data.axes[4] + 1.0) / 2 #0.0 - 1.0
+            self.wheels[wheel_key].sdo['Velocity - desired value'].raw = int(trigger_norm * 3000) # 0 - 500 RPM
 
 
 
