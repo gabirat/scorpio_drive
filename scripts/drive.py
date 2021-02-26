@@ -38,13 +38,13 @@ class DriveModule:
             print('Power toogled: ', self.enabled)
             self.wheels['rl'].sdo['Power enable'].raw = self.enabled
 
-        print('Position actual value:', self.wheels[wheel_key].sdo['Position actual value'].raw)
-        print('Position actual value [count]:', self.wheels[wheel_key].sdo['Position actual value [count]'].raw)
-        print('Torque actual value:', self.wheels[wheel_key].sdo['Torque actual value'].raw)
-        print('Current actual value:', self.wheels[wheel_key].sdo['Current actual value'].raw)
-        print('Current - actual value:', self.wheels[wheel_key].sdo['Current - actual value'].raw)
-        print('Unfiltered velocity - actual value:', self.wheels[wheel_key].sdo['Unfiltered velocity - actual value'].raw)
-        print('Velocity - desired value:', self.wheels[wheel_key].sdo['Velocity - desired value'].raw)
+        print('Position actual value:', self.wheels['rl'].sdo['Position actual value'].raw)
+        print('Position actual value [count]:', self.wheels['rl'].sdo['Position actual value [count]'].raw)
+        print('Torque actual value:', self.wheels['rl'].sdo['Torque actual value'].raw)
+        print('Current actual value:', self.wheels['rl'].sdo['Current actual value'].raw)
+        print('Current - actual value:', self.wheels['rl'].sdo['Current - actual value'].raw)
+        print('Unfiltered velocity - actual value:', self.wheels['rl'].sdo['Unfiltered velocity - actual value'].raw)
+        print('Velocity - desired value:', self.wheels['rl'].sdo['Velocity - desired value'].raw)
         trigger_norm = 1.0 - ((data.axes[4] + 1.0) / 2) #0.0 - 1.0
         self.wheels['rl'].sdo['Velocity - desired value'].raw = int(trigger_norm * 3000) # 0 - 500 RPM
 
