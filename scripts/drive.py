@@ -26,7 +26,7 @@ class DriveModule:
 
         #ROS Node setup
         rospy.Subscriber('joy', Joy, self.controller_data)
-        self.wheels['rl'].sdo['Device command - execute on change'].raw = 0x13 #Mode Vel
+        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x13 #Mode Vel
         self.wheels['rl'].sdo['Power enable'].raw = 1
 
 
