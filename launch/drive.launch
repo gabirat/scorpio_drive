@@ -6,7 +6,7 @@
   </node>
 
   <!-- drive node -->
-  <node pkg="drive" type="drive.py" name="drive" >
+  <node pkg="drive" type="drive.py" name="drive" output="screen">
     <param name="can_interface" type="string" value="vcan0" />
     <param name="micontrol_eds" type="string" value="$(find drive)/config/mcDSA-Exx.eds" />
   </node>
