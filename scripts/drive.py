@@ -38,17 +38,17 @@ class DriveModule:
         node.tpdo.read()
         node.rpdo.read()
 
-        node.rpdo[0].clear()
-        node.rpdo[0].add_variable('Device command', 'Device command - data 0')
-        node.rpdo[0].add_variable('Device command', 'Device command - execute on change')
-        node.rpdo[0].enabled = True
+        node.rpdo[4].clear()
+        node.rpdo[4].add_variable('Device command', 'Device command - data 0')
+        node.rpdo[4].add_variable('Device command', 'Device command - execute on change')
+        node.rpdo[4].enabled = True
 
         # Save new configuration (node must be in pre-operational)
         node.nmt.state = 'PRE-OPERATIONAL'
         node.rpdo.save()
 
-        # Start RPDO0 with an interval of 100 ms
-        node.rpdo[0].start(0.01)
+        # Start RPDO4 with an interval of 100 ms
+        node.rpdo[4].start(0.01)
         node.nmt.state = 'OPERATIONAL'
 
     def controller_data(self, data):
@@ -73,8 +73,8 @@ class DriveModule:
         print('Speed: ', speed)
         print('\n')
 
-        self.wheels['rl'].rpdo[0]['Device command']['Device command - data 0'].raw = speed
-        self.wheels['rl'].rpdo[0]['Device command']['Device command - execute on change'].raw = 0x32
+        self.wheels['rl'].rpdo[4]['Device command']['Device command - data 0'].raw = speed
+        self.wheels['rl'].rpdo[4]['Device command']['Device command - execute on change'].raw = 0x32
 
 if __name__ == '__main__':
     drive = DriveModule()
