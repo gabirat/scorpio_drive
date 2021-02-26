@@ -40,9 +40,9 @@ class DriveModule:
 
         for wheel_key in self.wheels:
             print('Current actual value:', self.wheels[wheel_key].sdo['Current actual value'].phys)
-            print('Velocity - desired value :', self.wheels[wheel_key].sdo['Velocity - desired value'].raw)
+            print('Current - desired value:', self.wheels[wheel_key].sdo['Current - desired value'].raw)
             trigger_norm = (data.axes[4] + 1.0) / 2 #0.0 - 1.0
-            self.wheels[wheel_key].sdo['Velocity - desired value'].raw = int(trigger_norm * 3000) # 0 - 500 RPM
+            self.wheels[wheel_key].sdo['Current - desired value'].raw = int(trigger_norm * 3000) # 0 - 500 RPM
 
 
 
