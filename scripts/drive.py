@@ -31,10 +31,10 @@ class DriveModule:
 
 
     def controller_data(self, data):
-        print('Controler data')
         for wheel_key in self.wheels:
-            print(self.wheels[wheel_key].sdo['Current actual value'].raw)
-            self.wheels[wheel_key].sdo['Velocity - desired value'].raw = data.axes[4] * 500 # 0 - 500 RPM
+            print(self.wheels[wheel_key].sdo['Current actual value'].phys)
+            print(self.wheels[wheel_key].sdo['Velocity - desired value'].raw)
+            self.wheels[wheel_key].sdo['Velocity - desired value'].raw = int(data.axes[4] * 500) # 0 - 500 RPM
 
 
 
