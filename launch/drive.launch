@@ -1,13 +1,13 @@
 <launch>
   <!-- joy node -->
   <node respawn="true" pkg="joy" type="joy_node" name="joy" >
-    <param name="dev" type="string" value="/dev/input/js2" />
+    <param name="dev" type="string" value="/dev/input/js0" />
     <param name="deadzone" value="0.12" />
   </node>
 
   <!-- drive node -->
   <node pkg="drive" type="drive.py" name="drive" output="screen">
-    <param name="can_interface" type="string" value="vcan0" />
+    <param name="can_interface" type="string" value="can0" />
     <param name="micontrol_eds" type="string" value="$(find drive)/config/mcDSA-Exx.eds" />
   </node>
 </launch>
