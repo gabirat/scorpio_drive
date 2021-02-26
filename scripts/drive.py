@@ -48,8 +48,9 @@ class DriveModule:
         node.rpdo.save()
 
         # Start RPDO4 with an interval of 100 ms
+        node.rpdo[4]['Device command.Device command - data 0'].raw = 0
+        node.rpdo[4]['Device command.Device command - execute on change'].raw = 0x32
         node.rpdo[4].start(0.01)
-        node.nmt.state = 'OPERATIONAL'
 
     def controller_data(self, data):
         if data.buttons[7]:
