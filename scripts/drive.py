@@ -23,7 +23,7 @@ class DriveModule:
             "rl": self.network.add_node(3, micontrol_eds),
             "rr": self.network.add_node(4, micontrol_eds)
         }
-        network.nmt.state = 'OPERATIONAL'
+        self.network.nmt.state = 'OPERATIONAL'
 
         #ROS Node setup
         rospy.Subscriber('joy', Joy, self.controller_data)
