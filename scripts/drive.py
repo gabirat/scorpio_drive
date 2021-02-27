@@ -41,8 +41,8 @@ class DriveModule:
         node.rpdo.read()
 
         node.rpdo[4].clear()
+        node.sdo['Device command']['Device command - data 1'].raw = 0
         node.rpdo[4].add_variable('Device command', 'Device command - data 0')
-        node.rpdo[4].add_variable('Device command', 'Device command - data 1')
         node.rpdo[4].add_variable('Device command', 'Device command - execute on change')
         node.rpdo[4].enabled = True
 
@@ -52,7 +52,6 @@ class DriveModule:
 
         # Start RPDO4 with an interval of 100 ms
         node.rpdo[4]['Device command.Device command - data 0'].raw = 0
-        node.rpdo[4]['Device command.Device command - data 1'].raw = 0
         node.rpdo[4]['Device command.Device command - execute on change'].raw = 0x32
         node.rpdo[4].start(0.01)
 
