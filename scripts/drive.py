@@ -25,11 +25,13 @@ class DriveModule:
         }
 
         self.setup_pdo(self.wheels['rl'])
-        
+        print("PDO is set up")
         self.network.nmt.state = 'OPERATIONAL'
         #ROS Node setup
         rospy.Subscriber('joy', Joy, self.controller_data)
+        print("Subscribed to controller")
         self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x15 #Mode SubVel
+        print("Mode Sub Velocity")
         
 
 
@@ -40,6 +42,7 @@ class DriveModule:
 
         node.rpdo[4].clear()
         node.rpdo[4].add_variable('Device command', 'Device command - data 0')
+        node.rpdo[4].add_variable('Device command', 'Device command - data 1')
         node.rpdo[4].add_variable('Device command', 'Device command - execute on change')
         node.rpdo[4].enabled = True
 
@@ -49,6 +52,7 @@ class DriveModule:
 
         # Start RPDO4 with an interval of 100 ms
         node.rpdo[4]['Device command.Device command - data 0'].raw = 0
+        node.rpdo[4]['Device command.Device command - data 1'].raw = 0
         node.rpdo[4]['Device command.Device command - execute on change'].raw = 0x32
         node.rpdo[4].start(0.01)
 
@@ -58,17 +62,9 @@ class DriveModule:
             print('Power toogled: ', self.enabled)
             self.wheels['rl'].sdo['Power enable'].raw = self.enabled
 
-        print('Position actual value:', self.wheels['rl'].sdo['Position actual value'].raw)
-        print('Position actual value [count]:', self.wheels['rl'].sdo['Position actual value [count]'].raw)
-        print('Torque actual value:', self.wheels['rl'].sdo['Torque actual value'].raw)
-        print('Current actual value:', self.wheels['rl'].sdo['Current actual value'].raw)
-        print('Current - actual value:', self.wheels['rl'].sdo['Current - actual value']['Current - actual value'].raw)
-        print('Measured velocity in [rpm]:', self.wheels['rl'].sdo['Measured velocity in increments']['Measured velocity in [rpm]'].raw)
-        print('Velocity - desired value:', self.wheels['rl'].sdo['Velocity - desired value'].raw)
-        
         triggerR_norm = 1.0 - ((data.axes[4] + 1.0) / 2) #0.0 - 1.0
         triggerL_norm =       ((data.axes[5] - 1.0) / 2) #-1.0 - 0.0
-        SPEED_CONSTANT = 4000
+        SPEED_CONSTANT = 740
         speed = int ((triggerR_norm + triggerL_norm) * SPEED_CONSTANT)
 
         print('Speed: ', speed)
