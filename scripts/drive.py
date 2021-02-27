@@ -61,7 +61,7 @@ class DriveModule:
             print('Power toogled: ', self.enabled)
             self.wheels['rl'].sdo['Power enable'].raw = self.enabled
         print("R: ", data.axes[4])
-        print("L: ", data.axes[4])
+        print("L: ", data.axes[5])
         triggerR_norm = 1.0 - ((data.axes[4] + 1.0) / 2) #0.0 - 1.0
         triggerL_norm =       ((data.axes[5] - 1.0) / 2) #-1.0 - 0.0
         SPEED_CONSTANT = 740
