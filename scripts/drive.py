@@ -19,18 +19,21 @@ class DriveModule:
         self.enabled = 0
         self.wheels = {
             "fl": self.network.add_node(1, micontrol_eds),
-            "fr": self.network.add_node(2, micontrol_eds),
-            "rl": self.network.add_node(3, micontrol_eds),
-            "rr": self.network.add_node(4, micontrol_eds)
+            "rl": self.network.add_node(2, micontrol_eds),
+            "rr": self.network.add_node(3, micontrol_eds),
+            "fr": self.network.add_node(4, micontrol_eds)
         }
 
-        self.setup_pdo(self.wheels['rl'])
+        for wheel in self.wheels:
+            self.setup_pdo(self.wheels[wheel])
+        
         print("PDO is set up")
         self.network.nmt.state = 'OPERATIONAL'
         #ROS Node setup
         rospy.Subscriber('joy', Joy, self.controller_data)
         print("Subscribed to controller")
-        self.wheels['rl'].sdo['Device command']['Device command - execute on change'].raw = 0x15 #Mode SubVel
+        for wheel in self.wheels:
+            self.wheels[wheel].sdo['Device command']['Device command - execute on change'].raw = 0x15 #Mode SubVel
         print("Mode Sub Velocity")
         
 
@@ -59,7 +62,8 @@ class DriveModule:
         if data.buttons[7]:
             self.enabled = 1 if self.enabled == 0 else 0
             print('Power toogled: ', self.enabled)
-            self.wheels['rl'].sdo['Power enable'].raw = self.enabled
+            for wheel in self.wheels:
+                self.wheels[wheel].sdo['Power enable'].raw = self.enabled
         print("R: ", data.axes[4])
         print("L: ", data.axes[5])
         triggerR_norm = 1.0 - ((data.axes[4] + 1.0) / 2) #0.0 - 1.0
@@ -69,9 +73,9 @@ class DriveModule:
 
         print('Speed: ', speed)
         print('\n')
-
-        self.wheels['rl'].rpdo[4]['Device command.Device command - data 0'].raw = speed
-        self.wheels['rl'].rpdo[4]['Device command.Device command - execute on change'].raw = 0x32
+        for wheel in wheels:
+            self.wheels[wheel].rpdo[4]['Device command.Device command - data 0'].raw = speed
+            self.wheels[wheel].rpdo[4]['Device command.Device command - execute on change'].raw = 0x32
 
 if __name__ == '__main__':
     drive = DriveModule()
