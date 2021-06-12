@@ -73,7 +73,7 @@ class DriveModule:
 
         self.network.nmt.state = 'OPERATIONAL'
         # ROS Node setup
-        rospy.Subscriber('cmd_vel', twist, self.controller_data)
+        rospy.Subscriber('cmd_vel', Twist, self.controller_data)
         print("Subscribed to controller")
 
 
