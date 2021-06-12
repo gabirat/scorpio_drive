@@ -2,7 +2,7 @@
 
 import rospy
 import canopen  # https://github.com/christiansandberg/canopen Check for example code
-from geometry_msgs.msg import twist
+from geometry_msgs.msg import Twist
 
 # CONFIG
 WHEELS_TO_ID = {
@@ -12,14 +12,13 @@ SPEED_CONSTANT = 740
 
 
 
-logger = print
 
 class Wheel:
     def __init__(self, wheel_id, network, micontrol_eds):
         self.id = wheel_id
         self.node = network.add_node(wheel_id, micontrol_eds)
         self.node.sdo['Device command']['Device command - execute on change'].raw = 0x15  # Mode SubVel
-        logger("Mode Sub Velocity")
+        print("Mode Sub Velocity")
         self._setup_pdo()
 
     def set_speed(self, speed):
@@ -46,7 +45,7 @@ class Wheel:
         self.node.rpdo[4]['Device command.Device command - data 0'].raw = 0
         self.node.rpdo[4]['Device command.Device command - execute on change'].raw = 0x32
         self.node.rpdo[4].start(0.01)
-        logger("PDO is set up")
+        print("PDO is set up")
 
 
 class DriveModule:
@@ -75,7 +74,7 @@ class DriveModule:
         self.network.nmt.state = 'OPERATIONAL'
         # ROS Node setup
         rospy.Subscriber('cmd_vel', twist, self.controller_data)
-        logger("Subscribed to controller")
+        print("Subscribed to controller")
 
 
     def controller_data(self, data):
@@ -95,7 +94,7 @@ class DriveModule:
                     wheel.set_speed(rangular * data.linear.x)
 
         #logger('Speed: ', speed)
-        logger('\n')
+        print('\n')
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>drive</name>
+  <name>scorpio7_drive</name>
   <version>0.0.0</version>
   <description>Drive module for ScorpioX rover</description>
 
